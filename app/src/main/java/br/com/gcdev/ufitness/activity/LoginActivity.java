@@ -12,7 +12,6 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.Objects;
 
 import br.com.gcdev.ufitness.R;
 import br.com.gcdev.ufitness.data.form.LoginForm;
@@ -23,32 +22,65 @@ import retrofit2.Call;
 public class LoginActivity extends AppCompatActivity {
 
     private static final String CONECTAR = "Conectar";
+    private static final String CANNOT_BE_EMPYT = "Campo não pode estar vazio";
+
     private LoginForm loginForm = new LoginForm();
+
+    private TextInputEditText editTextEmail, editTextPassword;
+    private Button buttonSend;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         setTitle(CONECTAR);
-        configBtnConnect();
+        getViewElements();
+        onClickBtnConnect();
     }
 
-    private void fillLoginForm() {
-        TextInputEditText editTextEmail = findViewById(R.id.text_input_edit_login_email);
-        TextInputEditText editTextPassword = findViewById(R.id.text_input_edit_login_password);
-        if(editTextEmail.getText() != null && editTextPassword.getText() != null){
-            loginForm.setEmail(editTextEmail.getText().toString());
-            loginForm.setPassword(editTextPassword.getText().toString());
-        }
+    private void getViewElements(){
+        editTextEmail = findViewById(R.id.text_input_edit_login_email);
+        editTextPassword = findViewById(R.id.text_input_edit_login_password);
+        buttonSend = findViewById(R.id.activity_login_btn_connectar);
     }
 
-    private void configBtnConnect() {
-        Button buttonSend = findViewById(R.id.activity_login_btn_connectar);
+    private void onClickBtnConnect() {
         buttonSend.setOnClickListener(v -> {
-                fillLoginForm();
+            if(isFormValid()){
                 configThreadPolicy();
-                doLogin();
+//                doLogin();
+            }
         });
+    }
+
+    private void configThreadPolicy() {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+    }
+
+    private void openHomeActivity() {
+        startActivity(new Intent(this, HomeActivity.class));
+    }
+
+    private boolean isFormValid() {
+       String email = editTextEmail.getText() != null ? editTextEmail.getText().toString() : "";
+       String password = editTextPassword.getText() != null ? editTextPassword.getText().toString() : "";
+
+       if(email.isEmpty()){
+           editTextEmail.setError(CANNOT_BE_EMPYT);
+           return false;
+       }else{
+           editTextEmail.setError(null);
+
+       }
+       if(password.isEmpty()){
+           editTextPassword.setError(CANNOT_BE_EMPYT);
+           return false;
+       }else{
+           editTextPassword.setError(null);
+       }
+       return true;
     }
 
     private void doLogin() {
@@ -61,15 +93,6 @@ public class LoginActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private void configThreadPolicy() {
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-    }
-
-    private void openHomeActivity() {
-        startActivity(new Intent(this, HomeActivity.class));
     }
 
 }

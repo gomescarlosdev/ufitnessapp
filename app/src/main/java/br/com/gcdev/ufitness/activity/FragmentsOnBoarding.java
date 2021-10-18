@@ -3,6 +3,7 @@ package br.com.gcdev.ufitness.activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import br.com.gcdev.ufitness.R;
 
 public class FragmentsOnBoarding extends AppCompatActivity {
 
