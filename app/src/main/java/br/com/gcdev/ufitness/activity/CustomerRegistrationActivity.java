@@ -4,14 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.IOException;
 
@@ -23,26 +21,38 @@ import br.com.gcdev.ufitness.service.CustomerService;
 import retrofit2.Call;
 import retrofit2.Response;
 
-public class CustomerRegistrationActivity extends AppCompatActivity {
+public class CustomerRegistrationActivity extends AppCompatActivity implements ConstantsActivities{
 
     private static final String REGISTRO = "Registro";
+
     private CustomerForm customerForm = new CustomerForm();
+
+    TextInputEditText editTextName, editTextEmail, editTextPassword, editTextRepeatPassword;
+    Button buttonSend;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_registration);
         setTitle(REGISTRO);
-        Button buttonSend = findViewById(R.id.activity_customer_reg_btn_send);
+
+        configThreadPolicy();
+
+        getViewElements();
+        onClickBtnSend();
+    }
+
+    private void getViewElements(){
+        editTextName = findViewById(R.id.text_input_edit_customer_name);
+        editTextEmail = findViewById(R.id.text_input_edit_customer_email);
+        editTextPassword = findViewById(R.id.text_input_edit_customer_password);
+        editTextRepeatPassword = findViewById(R.id.text_input_edit_customer_repeat_password);
+        buttonSend = findViewById(R.id.activity_customer_reg_btn_send);
+    }
+
+    private void onClickBtnSend() {
         buttonSend.setOnClickListener(v -> {
-
-            fillCustomerForm();
-            int SDK_INT = android.os.Build.VERSION.SDK_INT;
-            if (SDK_INT > 8)
-            {
-                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                StrictMode.setThreadPolicy(policy);
-
+            if(isFormValid()){
                 CustomerService customerService = new UfitnessRetrofit().getCustomerService();
                 Call<ClientDTO> call = customerService.create(customerForm);
                 try {
@@ -57,26 +67,73 @@ public class CustomerRegistrationActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
-    private void fillCustomerForm() {
-
-        TextInputEditText editTextName = findViewById(R.id.text_input_edit_customer_name);
-        TextInputEditText editTextEmail = findViewById(R.id.text_input_edit_customer_email);
-        TextInputEditText editTextPassword = findViewById(R.id.text_input_edit_customer_password);
-        TextInputEditText editTextRepeatPassword = findViewById(R.id.text_input_edit_customer_repeat_password);
-
-        if(editTextName.getText() != null && editTextEmail.getText() != null &&
-                editTextPassword.getText() != null){
-            customerForm.setName(editTextName.getText().toString());
-            customerForm.setEmail(editTextEmail.getText().toString());
-            customerForm.setPassword(editTextPassword.getText().toString());
-        }
+    private void configThreadPolicy() {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
     }
 
     private void openLoginActivity() {
         startActivity(new Intent(this, LoginActivity.class));
+    }
+
+    private boolean isFormValid() {
+
+        String name = editTextName.getText() != null ? editTextName.getText().toString() : "";
+        String email = editTextEmail.getText() != null ? editTextEmail.getText().toString() : "";
+        String password = editTextPassword.getText() != null ? editTextPassword.getText().toString() : "";
+        String repeatPassword = editTextRepeatPassword.getText() != null ? editTextRepeatPassword.getText().toString() : "";
+
+        return isNameValid(name) && isEmailValid(email) &&
+                isPasswordValid(password) && arePasswordsMatch(password, repeatPassword);
+
+    }
+
+    private boolean isNameValid(String name) {
+        if(name.isEmpty()){
+            editTextName.setError(CANNOT_BE_EMPYT);
+            return false;
+        }else{
+            editTextName.setError(null);
+            return true;
+        }
+    }
+
+    private boolean isEmailValid(String email) {
+        if(email.isEmpty()){
+            editTextEmail.setError(CANNOT_BE_EMPYT);
+            return false;
+        }else{
+            editTextEmail.setError(null);
+            return true;
+        }
+    }
+
+    private boolean isPasswordValid(String password) {
+        if(password.isEmpty()){
+            editTextPassword.setError(CANNOT_BE_EMPYT);
+            return false;
+        }else if (password.length() < 8){
+            editTextPassword.setError(PASSWORD_T0O_SHORT);
+            return false;
+        } else{
+            editTextPassword.setError(null);
+            return true;
+        }
+    }
+
+    private boolean arePasswordsMatch(String password, String repeatPassword) {
+        if(repeatPassword.isEmpty()){
+            editTextRepeatPassword.setError(CANNOT_BE_EMPYT);
+            return false;
+        } else if (!password.equals(repeatPassword)){
+            editTextRepeatPassword.setError(PASSWORD_DONT_MATCH);
+            return false;
+        } else{
+            editTextRepeatPassword.setError(null);
+            return true;
+        }
     }
 
 }

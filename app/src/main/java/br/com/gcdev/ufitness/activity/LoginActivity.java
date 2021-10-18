@@ -19,10 +19,9 @@ import br.com.gcdev.ufitness.retrofit.UfitnessRetrofit;
 import br.com.gcdev.ufitness.service.LoginService;
 import retrofit2.Call;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements ConstantsActivities{
 
     private static final String CONECTAR = "Conectar";
-    private static final String CANNOT_BE_EMPYT = "Campo não pode estar vazio";
 
     private LoginForm loginForm = new LoginForm();
 
