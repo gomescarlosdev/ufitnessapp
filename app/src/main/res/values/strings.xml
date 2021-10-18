@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">UfitnessApp</string>
+
+    <!-- Customer Registration -->
+    <string name="activity_customer_reg_email">Email</string>
+    <string name="activity_customer_reg_password">Senha</string>
+    <string name="activity_customer_reg_repeat_password">Repetir senha</string>
+    <string name="activity_customer_reg_btn_connect_smartband">Conectar Smartband</string>
+    <string name="activity_customer_reg_name">Nome</string>
+    <string name="activity_customer_reg_btn_send">Enviar</string>
+
+    <!-- Login -->
+    <string name="activity_login_email">Email</string>
+    <string name="activity_login_password">Senha</string>
+    <string name="activity_login_btn_conectar">Conectar</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="text_input_required">Campo Obrigatório</string>
+
+</resources>
