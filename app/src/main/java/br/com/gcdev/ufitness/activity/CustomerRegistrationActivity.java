@@ -3,6 +3,7 @@ package br.com.gcdev.ufitness.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.util.Patterns;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -52,21 +53,25 @@ public class CustomerRegistrationActivity extends AppCompatActivity implements C
 
     private void onClickBtnSend() {
         buttonSend.setOnClickListener(v -> {
-            if(isFormValid()){
-                CustomerService customerService = new UfitnessRetrofit().getCustomerService();
-                Call<ClientDTO> call = customerService.create(customerForm);
-                try {
-                    Response<ClientDTO> loginResponse = call.execute();
-                    if(loginResponse.code() == 201){
-                        openLoginActivity();
-                    }else{
-                        Toast.makeText(CustomerRegistrationActivity.this, "You are in", Toast.LENGTH_LONG).show();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            if (isFormValid()) {
+                createCustomer();
             }
         });
+    }
+
+    private void createCustomer() {
+        try {
+            CustomerService customerService = new UfitnessRetrofit().getCustomerService();
+            Call<ClientDTO> call = customerService.create(customerForm);
+            Response<ClientDTO> loginResponse = call.execute();
+            if (loginResponse.code() == 201) {
+                openLoginActivity();
+            } else {
+                Toast.makeText(CustomerRegistrationActivity.this, "Falha ao tentar realizar o cadastro", Toast.LENGTH_LONG).show();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void configThreadPolicy() {
@@ -84,6 +89,10 @@ public class CustomerRegistrationActivity extends AppCompatActivity implements C
         String email = editTextEmail.getText() != null ? editTextEmail.getText().toString() : "";
         String password = editTextPassword.getText() != null ? editTextPassword.getText().toString() : "";
         String repeatPassword = editTextRepeatPassword.getText() != null ? editTextRepeatPassword.getText().toString() : "";
+
+        customerForm.setName(name);
+        customerForm.setEmail(email);
+        customerForm.setPassword(password);
 
         return isNameValid(name) && isEmailValid(email) &&
                 isPasswordValid(password) && arePasswordsMatch(password, repeatPassword);
@@ -104,6 +113,9 @@ public class CustomerRegistrationActivity extends AppCompatActivity implements C
         if(email.isEmpty()){
             editTextEmail.setError(CANNOT_BE_EMPYT);
             return false;
+        }else if (!email.matches(EMAIL_PATTERN)){
+            editTextEmail.setError(EMAIL_INVALID);
+            return false;
         }else{
             editTextEmail.setError(null);
             return true;
@@ -117,7 +129,7 @@ public class CustomerRegistrationActivity extends AppCompatActivity implements C
         }else if (password.length() < 8){
             editTextPassword.setError(PASSWORD_T0O_SHORT);
             return false;
-        } else{
+        }else{
             editTextPassword.setError(null);
             return true;
         }

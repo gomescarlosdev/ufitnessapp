@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,6 +35,9 @@ public class LoginActivity extends AppCompatActivity implements ConstantsActivit
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         setTitle(CONECTAR);
+
+        configThreadPolicy();
+
         getViewElements();
         onClickBtnConnect();
     }
@@ -47,8 +51,7 @@ public class LoginActivity extends AppCompatActivity implements ConstantsActivit
     private void onClickBtnConnect() {
         buttonSend.setOnClickListener(v -> {
             if(isFormValid()){
-                configThreadPolicy();
-//                doLogin();
+                doLogin();
             }
         });
     }
@@ -66,20 +69,33 @@ public class LoginActivity extends AppCompatActivity implements ConstantsActivit
        String email = editTextEmail.getText() != null ? editTextEmail.getText().toString() : "";
        String password = editTextPassword.getText() != null ? editTextPassword.getText().toString() : "";
 
-       if(email.isEmpty()){
-           editTextEmail.setError(CANNOT_BE_EMPYT);
-           return false;
-       }else{
-           editTextEmail.setError(null);
+       loginForm.setEmail(email);
+       loginForm.setPassword(password);
 
-       }
-       if(password.isEmpty()){
-           editTextPassword.setError(CANNOT_BE_EMPYT);
-           return false;
-       }else{
-           editTextPassword.setError(null);
-       }
-       return true;
+       return isEmailValid(email) && isPasswordValid(password);
+    }
+
+    private boolean isEmailValid(String email){
+        if(email.isEmpty()){
+            editTextEmail.setError(CANNOT_BE_EMPYT);
+            return false;
+        }else if (!email.matches(EMAIL_PATTERN)){
+            editTextEmail.setError(EMAIL_INVALID);
+            return false;
+        }else{
+            editTextEmail.setError(null);
+            return true;
+        }
+    }
+
+    private boolean isPasswordValid(String password) {
+        if(password.isEmpty()){
+            editTextPassword.setError(CANNOT_BE_EMPYT);
+            return false;
+        }else{
+            editTextPassword.setError(null);
+            return true;
+        }
     }
 
     private void doLogin() {
@@ -88,6 +104,8 @@ public class LoginActivity extends AppCompatActivity implements ConstantsActivit
         try {
             if(call.execute().code() == 200){
                 openHomeActivity();
+            }else{
+                Toast.makeText(this, "Usuário ou senha inválidos!", Toast.LENGTH_LONG).show();
             }
         } catch (IOException e) {
             e.printStackTrace();
