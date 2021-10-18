@@ -30,6 +30,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/activity_login_email"
+            android:clickable="true"
+            android:focusable="true"
             android:maxLength="255" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -53,7 +55,11 @@
             android:id="@+id/text_input_edit_login_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Senha" />
+            android:hint="Senha"
+            android:inputType="textPassword"
+            android:clickable="true"
+            android:focusable="true"
+            android:maxLength="20"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button

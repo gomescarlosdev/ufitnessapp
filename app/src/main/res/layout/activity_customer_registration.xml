@@ -112,6 +112,7 @@
         android:text="@string/activity_customer_reg_btn_connect_smartband"
         android:textAllCaps="false"
         android:textSize="12sp"
+        android:enabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.162"
         app:layout_constraintStart_toStartOf="parent"
