@@ -13,8 +13,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.UfitnessApp">
 
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 <!--        <activity-->
-<!--            android:name=".MainActivity"-->
+<!--            android:name=".activity.InitialActivity"-->
 <!--            android:exported="true">-->
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->
@@ -22,15 +30,8 @@
 <!--                <category android:name="android.intent.category.LAUNCHER" />-->
 <!--            </intent-filter>-->
 <!--        </activity>-->
-        <activity
-            android:name=".activity.InitialActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".activity.InitialActivity"
+            android:exported="false"/>
         <activity
             android:name=".activity.LoginActivity"
             android:exported="false" />
@@ -39,9 +40,6 @@
             android:exported="false" />
         <activity
             android:name=".activity.CustomerRegistrationActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activity.FragmentsOnBoarding"
             android:exported="false" />
     </application>
 
