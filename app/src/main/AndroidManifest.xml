@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.UfitnessApp">
-
+        <activity
+            android:name=".activity.FragmentsOnBoarding"
+            android:exported="false" />
         <activity
             android:name=".activity.InitialActivity"
             android:exported="true">
@@ -22,10 +24,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.LoginActivity" android:exported="false" />
-        <activity android:name=".activity.HomeActivity" android:exported="false" />
-        <activity android:name=".activity.CustomerRegistrationActivity" android:exported="false" />
-
+        <activity
+            android:name=".activity.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.HomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.CustomerRegistrationActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
