@@ -30,9 +30,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/activity_login_email"
+            android:maxLength="255"
             android:clickable="true"
-            android:focusable="true"
-            android:maxLength="255" />
+            android:focusable="true"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout

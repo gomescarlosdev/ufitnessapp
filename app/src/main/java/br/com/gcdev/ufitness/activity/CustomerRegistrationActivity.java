@@ -18,7 +18,6 @@ import java.io.IOException;
 
 import br.com.gcdev.ufitness.R;
 import br.com.gcdev.ufitness.data.form.CustomerForm;
-import br.com.gcdev.ufitness.data.dto.ClientDTO;
 import br.com.gcdev.ufitness.retrofit.UfitnessRetrofit;
 import br.com.gcdev.ufitness.service.CustomerService;
 import retrofit2.Call;
@@ -64,8 +63,8 @@ public class CustomerRegistrationActivity extends AppCompatActivity implements C
     private void createCustomer() {
         try {
             CustomerService customerService = new UfitnessRetrofit().getCustomerService();
-            Call<ClientDTO> call = customerService.create(customerForm);
-            Response<ClientDTO> response = call.execute();
+            Call<?> call = customerService.create(customerForm);
+            Response<?> response = call.execute();
             if (response.code() == 201) {
                 openLoginActivity();
             } else if (response.code() == 400) {
@@ -103,7 +102,7 @@ public class CustomerRegistrationActivity extends AppCompatActivity implements C
         customerForm.setPassword(password);
 
         return isNameValid(name) && isEmailValid(email) &&
-                isPasswordValid(password) && arePasswordsMatch(password, repeatPassword);
+                isPasswordValid(password) && arePasswordsTheSame(password, repeatPassword);
 
     }
 
@@ -143,7 +142,7 @@ public class CustomerRegistrationActivity extends AppCompatActivity implements C
         }
     }
 
-    private boolean arePasswordsMatch(String password, String repeatPassword) {
+    private boolean arePasswordsTheSame(String password, String repeatPassword) {
         if(repeatPassword.isEmpty()){
             editTextRepeatPassword.setError(CANNOT_BE_EMPYT);
             return false;

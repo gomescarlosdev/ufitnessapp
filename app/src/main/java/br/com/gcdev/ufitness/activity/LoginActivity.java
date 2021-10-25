@@ -11,6 +11,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.Map;
 
@@ -19,8 +22,9 @@ import br.com.gcdev.ufitness.data.form.LoginForm;
 import br.com.gcdev.ufitness.retrofit.UfitnessRetrofit;
 import br.com.gcdev.ufitness.service.LoginService;
 import retrofit2.Call;
+import retrofit2.Response;
 
-public class LoginActivity extends AppCompatActivity implements ConstantsActivities{
+public class LoginActivity extends AppCompatActivity implements ConstantsActivities {
 
     private static final String CONECTAR = "Conectar";
 
@@ -42,7 +46,7 @@ public class LoginActivity extends AppCompatActivity implements ConstantsActivit
         onClickBtnConnect();
     }
 
-    private void getViewElements(){
+    private void getViewElements() {
         editTextEmail = findViewById(R.id.text_input_edit_login_email);
         editTextPassword = findViewById(R.id.text_input_edit_login_password);
         buttonSend = findViewById(R.id.activity_login_btn_connectar);
@@ -50,7 +54,7 @@ public class LoginActivity extends AppCompatActivity implements ConstantsActivit
 
     private void onClickBtnConnect() {
         buttonSend.setOnClickListener(v -> {
-            if(isFormValid()){
+            if (isFormValid()) {
                 doLogin();
             }
         });
@@ -66,48 +70,55 @@ public class LoginActivity extends AppCompatActivity implements ConstantsActivit
     }
 
     private boolean isFormValid() {
-       String email = editTextEmail.getText() != null ? editTextEmail.getText().toString() : "";
-       String password = editTextPassword.getText() != null ? editTextPassword.getText().toString() : "";
+        String email = editTextEmail.getText() != null ? editTextEmail.getText().toString() : "";
+        String password = editTextPassword.getText() != null ? editTextPassword.getText().toString() : "";
 
-       loginForm.setEmail(email);
-       loginForm.setPassword(password);
+        loginForm.setEmail(email);
+        loginForm.setPassword(password);
 
-       return isEmailValid(email) && isPasswordValid(password);
+        return isEmailValid(email) && isPasswordValid(password);
     }
 
-    private boolean isEmailValid(String email){
-        if(email.isEmpty()){
+    private boolean isEmailValid(String email) {
+        if (email.isEmpty()) {
             editTextEmail.setError(CANNOT_BE_EMPYT);
             return false;
-        }else if (!email.matches(EMAIL_PATTERN)){
+        } else if (!email.matches(EMAIL_PATTERN)) {
             editTextEmail.setError(EMAIL_INVALID);
             return false;
-        }else{
+        } else {
             editTextEmail.setError(null);
             return true;
         }
     }
 
     private boolean isPasswordValid(String password) {
-        if(password.isEmpty()){
+        if (password.isEmpty()) {
             editTextPassword.setError(CANNOT_BE_EMPYT);
             return false;
-        }else{
+        } else {
             editTextPassword.setError(null);
             return true;
         }
     }
 
     private void doLogin() {
-        LoginService loginService = new UfitnessRetrofit().getLoginService();
-        Call<Map<String, String>> call = loginService.doLogin(loginForm);
         try {
-            if(call.execute().code() == 200){
+            LoginService loginService = new UfitnessRetrofit().getLoginService();
+            Call<Map<String, String>> call = loginService.doLogin(loginForm);
+            Response<?> response = call.execute();
+            if (response.code() == 200) {
                 openHomeActivity();
-            }else{
+            } else if (response.code() == 400) {
+                if (response.errorBody() != null) {
+                    Toast.makeText(this, new JSONObject(response.errorBody().string()).getString("message"), Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(this, "Usuário ou senha inválidos!", Toast.LENGTH_LONG).show();
+                }
+            } else {
                 Toast.makeText(this, "Usuário ou senha inválidos!", Toast.LENGTH_LONG).show();
             }
-        } catch (IOException e) {
+        } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
     }

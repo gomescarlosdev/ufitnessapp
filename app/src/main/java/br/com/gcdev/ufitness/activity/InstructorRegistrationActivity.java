@@ -17,7 +17,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.Map;
 
 import br.com.gcdev.ufitness.R;
 import br.com.gcdev.ufitness.data.form.InstructorForm;
@@ -117,12 +116,15 @@ public class InstructorRegistrationActivity extends AppCompatActivity implements
         instructorForm.setName(name);
         instructorForm.setEmail(email);
         instructorForm.setPassword(password);
-        instructorForm.setCpf("");
-        instructorForm.setCref("");
+        instructorForm.setCpf(document.replace(".", "").replace("-", ""));
+        instructorForm.setCref(registrationNumber);
 
-        return isNameValid(name) && isEmailValid(email) &&
-                isPasswordValid(password) && arePasswordsTheSame(password, repeatPassword);
-
+        return isNameValid(name) &&
+                isEmailValid(email) &&
+                isDocumentValid(document) &&
+                isRegistrationNumberValid(registrationNumber) &&
+                isPasswordValid(password) &&
+                arePasswordsTheSame(password, repeatPassword);
     }
 
     private boolean isNameValid(String name) {
@@ -174,5 +176,30 @@ public class InstructorRegistrationActivity extends AppCompatActivity implements
         }
     }
 
+    private boolean isDocumentValid(String document){
+        if (document.isEmpty()) {
+            editTextDocument.setError(CANNOT_BE_EMPYT);
+            return false;
+        } else if (document.length() < 10) {
+            editTextDocument.setError(DOCUMENT_TOO_SHORT);
+            return false;
+        } else {
+            editTextDocument.setError(null);
+            return true;
+        }
+    }
+
+    private boolean isRegistrationNumberValid(String registrationNumber){
+        if (registrationNumber.isEmpty()) {
+            editTextRegistrationNumber.setError(CANNOT_BE_EMPYT);
+            return false;
+        } else if (registrationNumber.length() < 15) {
+            editTextRegistrationNumber.setError(CREF_TOO_SHORT);
+            return false;
+        } else {
+            editTextRegistrationNumber.setError(null);
+            return true;
+        }
+    }
 
 }

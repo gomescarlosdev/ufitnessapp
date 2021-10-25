@@ -29,7 +29,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/activity_instructor_name"
-            android:maxLength="255" />
+            android:maxLength="255"
+            android:clickable="true"
+            android:focusable="true"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -52,7 +54,9 @@
             android:id="@+id/text_input_edit_instructor_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/activity_instructor_email" />
+            android:hint="@string/activity_instructor_email"
+            android:clickable="true"
+            android:focusable="true"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -78,7 +82,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/activity_instructor_document"
-            android:maxLength="15" />
+            android:maxLength="15"
+            android:clickable="true"
+            android:focusable="true"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -104,7 +110,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/activity_instructor_register"
-            android:maxLength="11" />
+            android:maxLength="11"
+            android:clickable="true"
+            android:focusable="true"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -128,7 +136,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/activity_instructor_password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:clickable="true"
+            android:focusable="true"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -152,7 +162,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/activity_instructor_repeat_password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:clickable="true"
+            android:focusable="true"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
