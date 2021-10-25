@@ -9,34 +9,37 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.github.rtoshiro.util.format.SimpleMaskFormatter;
+import com.github.rtoshiro.util.format.text.MaskTextWatcher;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Map;
 
 import br.com.gcdev.ufitness.R;
-import br.com.gcdev.ufitness.data.form.CustomerForm;
-import br.com.gcdev.ufitness.data.dto.ClientDTO;
+import br.com.gcdev.ufitness.data.form.InstructorForm;
 import br.com.gcdev.ufitness.retrofit.UfitnessRetrofit;
-import br.com.gcdev.ufitness.service.CustomerService;
+import br.com.gcdev.ufitness.service.InstructorService;
 import retrofit2.Call;
 import retrofit2.Response;
 
-public class CustomerRegistrationActivity extends AppCompatActivity implements ConstantsActivities{
+public class InstructorRegistrationActivity extends AppCompatActivity implements ConstantsActivities {
 
     private static final String REGISTRO = "Registro";
 
-    private CustomerForm customerForm = new CustomerForm();
+    private InstructorForm instructorForm = new InstructorForm();
 
-    TextInputEditText editTextName, editTextEmail, editTextPassword, editTextRepeatPassword;
+    TextInputEditText editTextName, editTextEmail, editTextDocument, editTextRegistrationNumber, editTextPassword, editTextRepeatPassword;
     Button buttonSend;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_customer_registration);
+        setContentView(R.layout.activity_instructor_registration);
         setTitle(REGISTRO);
 
         configThreadPolicy();
@@ -45,27 +48,38 @@ public class CustomerRegistrationActivity extends AppCompatActivity implements C
         onClickBtnSend();
     }
 
-    private void getViewElements(){
-        editTextName = findViewById(R.id.text_input_edit_customer_name);
-        editTextEmail = findViewById(R.id.text_input_edit_customer_email);
-        editTextPassword = findViewById(R.id.text_input_edit_customer_password);
-        editTextRepeatPassword = findViewById(R.id.text_input_edit_customer_repeat_password);
-        buttonSend = findViewById(R.id.activity_customer_reg_btn_send);
+    private void getViewElements() {
+        editTextName = findViewById(R.id.text_input_edit_instructor_name);
+        editTextEmail = findViewById(R.id.text_input_edit_instructor_email);
+        editTextDocument = findViewById(R.id.text_input_edit_instructor_document);
+        editTextRegistrationNumber = findViewById(R.id.text_input_edit_instructor_registration_number);
+        editTextPassword = findViewById(R.id.text_input_edit_instructor_password);
+        editTextRepeatPassword = findViewById(R.id.text_input_edit_instructor_repeat_password);
+        buttonSend = findViewById(R.id.activity_instructor_reg_btn_send);
+
+
+        SimpleMaskFormatter smf = new SimpleMaskFormatter("NNN.NNN.NNN-NN");
+        MaskTextWatcher mtw = new MaskTextWatcher(editTextDocument, smf);
+        editTextDocument.addTextChangedListener(mtw);
+
+        SimpleMaskFormatter smf2 = new SimpleMaskFormatter("NNNNN-L/LL");
+        MaskTextWatcher mtw2 = new MaskTextWatcher(editTextRegistrationNumber, smf2);
+        editTextRegistrationNumber.addTextChangedListener(mtw2);
     }
 
     private void onClickBtnSend() {
         buttonSend.setOnClickListener(v -> {
             if (isFormValid()) {
-                createCustomer();
+                createInstructor();
             }
         });
     }
 
-    private void createCustomer() {
+    private void createInstructor() {
         try {
-            CustomerService customerService = new UfitnessRetrofit().getCustomerService();
-            Call<ClientDTO> call = customerService.create(customerForm);
-            Response<ClientDTO> response = call.execute();
+            InstructorService instructorService = new UfitnessRetrofit().getInstructorService();
+            Call<?> call = instructorService.create(instructorForm);
+            Response<?> response = call.execute();
             if (response.code() == 201) {
                 openLoginActivity();
             } else if (response.code() == 400) {
@@ -95,65 +109,70 @@ public class CustomerRegistrationActivity extends AppCompatActivity implements C
 
         String name = editTextName.getText() != null ? editTextName.getText().toString() : "";
         String email = editTextEmail.getText() != null ? editTextEmail.getText().toString() : "";
+        String document = editTextDocument.getText() != null ? editTextDocument.getText().toString() : "";
+        String registrationNumber = editTextRegistrationNumber.getText() != null ? editTextRegistrationNumber.getText().toString() : "";
         String password = editTextPassword.getText() != null ? editTextPassword.getText().toString() : "";
         String repeatPassword = editTextRepeatPassword.getText() != null ? editTextRepeatPassword.getText().toString() : "";
 
-        customerForm.setName(name);
-        customerForm.setEmail(email);
-        customerForm.setPassword(password);
+        instructorForm.setName(name);
+        instructorForm.setEmail(email);
+        instructorForm.setPassword(password);
+        instructorForm.setCpf("");
+        instructorForm.setCref("");
 
         return isNameValid(name) && isEmailValid(email) &&
-                isPasswordValid(password) && arePasswordsMatch(password, repeatPassword);
+                isPasswordValid(password) && arePasswordsTheSame(password, repeatPassword);
 
     }
 
     private boolean isNameValid(String name) {
-        if(name.isEmpty()){
+        if (name.isEmpty()) {
             editTextName.setError(CANNOT_BE_EMPYT);
             return false;
-        }else{
+        } else {
             editTextName.setError(null);
             return true;
         }
     }
 
     private boolean isEmailValid(String email) {
-        if(email.isEmpty()){
+        if (email.isEmpty()) {
             editTextEmail.setError(CANNOT_BE_EMPYT);
             return false;
-        }else if (!email.matches(EMAIL_PATTERN)){
+        } else if (!email.matches(EMAIL_PATTERN)) {
             editTextEmail.setError(EMAIL_INVALID);
             return false;
-        }else{
+        } else {
             editTextEmail.setError(null);
             return true;
         }
     }
 
     private boolean isPasswordValid(String password) {
-        if(password.isEmpty()){
+        if (password.isEmpty()) {
             editTextPassword.setError(CANNOT_BE_EMPYT);
             return false;
-        }else if (password.length() < 8){
+        } else if (password.length() < 8) {
             editTextPassword.setError(PASSWORD_T0O_SHORT);
             return false;
-        }else{
+        } else {
             editTextPassword.setError(null);
             return true;
         }
     }
 
-    private boolean arePasswordsMatch(String password, String repeatPassword) {
-        if(repeatPassword.isEmpty()){
+    private boolean arePasswordsTheSame(String password, String repeatPassword) {
+        if (repeatPassword.isEmpty()) {
             editTextRepeatPassword.setError(CANNOT_BE_EMPYT);
             return false;
-        } else if (!password.equals(repeatPassword)){
+        } else if (!password.equals(repeatPassword)) {
             editTextRepeatPassword.setError(PASSWORD_DONT_MATCH);
             return false;
-        } else{
+        } else {
             editTextRepeatPassword.setError(null);
             return true;
         }
     }
+
 
 }

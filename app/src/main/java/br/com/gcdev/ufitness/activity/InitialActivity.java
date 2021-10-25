@@ -16,6 +16,7 @@ public class InitialActivity extends AppCompatActivity {
         setContentView(R.layout.activity_initial);
         clickOnBtnLogin();
         clickOnBtnCustomerRegistration();
+        clickOnBtnInstructorRegistration();
     }
 
     private void clickOnBtnLogin() {
@@ -28,11 +29,20 @@ public class InitialActivity extends AppCompatActivity {
         btnGoToCustomerRegistration.setOnClickListener(view -> openCustomerRegistrationActivity());
     }
 
+    private void clickOnBtnInstructorRegistration() {
+        Button btnGoToInstructorRegistration = findViewById(R.id.button_instructor_registration);
+        btnGoToInstructorRegistration.setOnClickListener(view -> openInstructorRegistrationActivity());
+    }
+
     private void openLoginActivity() {
         startActivity(new Intent(this, LoginActivity.class));
     }
 
     private void openCustomerRegistrationActivity() {
         startActivity(new Intent(this, CustomerRegistrationActivity.class));
+    }
+
+    private void openInstructorRegistrationActivity() {
+        startActivity(new Intent(this, InstructorRegistrationActivity.class));
     }
 }

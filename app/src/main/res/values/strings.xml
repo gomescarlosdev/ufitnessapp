@@ -18,5 +18,14 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="text_input_required">Campo Obrigatório</string>
+    <string name="activity_customer_reg_cpf">CPF</string>
+    <string name="activity_customer_reg_btn_diploma_attach">Diploma</string>
+    <string name="activity_instructor_name">Nome</string>
+    <string name="activity_instructor_email">Email</string>
+    <string name="activity_instructor_document">CPF</string>
+    <string name="activity_instructor_register">CREF</string>
+    <string name="activity_instructor_password">Senha</string>
+    <string name="activity_instructor_repeat_password">Repetir Senha</string>
+    <string name="activity_instructor_reg_btn_send">Enviar</string>
 
 </resources>

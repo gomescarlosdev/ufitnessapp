@@ -1,6 +1,7 @@
 package br.com.gcdev.ufitness.retrofit;
 
 import br.com.gcdev.ufitness.service.CustomerService;
+import br.com.gcdev.ufitness.service.InstructorService;
 import br.com.gcdev.ufitness.service.LoginService;
 import lombok.Getter;
 import okhttp3.OkHttpClient;
@@ -13,6 +14,7 @@ public class UfitnessRetrofit {
 
     private final LoginService loginService;
     private final CustomerService customerService;
+    private final InstructorService instructorService;
 
     public UfitnessRetrofit(){
 
@@ -29,7 +31,8 @@ public class UfitnessRetrofit {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         loginService = retrofit.create(LoginService.class);
-        customerService= retrofit.create(CustomerService.class);
+        customerService = retrofit.create(CustomerService.class);
+        instructorService = retrofit.create(InstructorService.class);
     }
 
 }

@@ -1,4 +1,4 @@
-package br.com.gcdev.ufitness.data.form.dto;
+package br.com.gcdev.ufitness.data.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
