@@ -88,6 +88,7 @@ public class CustomerRegistrationActivity extends AppCompatActivity implements C
 
     private void openLoginActivity() {
         startActivity(new Intent(this, LoginActivity.class));
+        finish();
     }
 
     private boolean isFormValid() {

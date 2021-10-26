@@ -102,6 +102,7 @@ public class InstructorRegistrationActivity extends AppCompatActivity implements
 
     private void openLoginActivity() {
         startActivity(new Intent(this, LoginActivity.class));
+        finish();
     }
 
     private boolean isFormValid() {

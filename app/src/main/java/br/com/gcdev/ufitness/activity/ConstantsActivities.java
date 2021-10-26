@@ -9,5 +9,6 @@ public interface ConstantsActivities {
     String PASSWORD_DONT_MATCH = "As senhas não podem ser diferentes";
     String DOCUMENT_TOO_SHORT = "O CPF deve ter no mínimo 11 digitos";
     String CREF_TOO_SHORT = "O CREF deve ter no mínimo 10 digitos";
+    String ADVANCE = "Avançar";
 
 }
