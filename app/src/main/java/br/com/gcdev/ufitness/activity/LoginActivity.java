@@ -110,8 +110,8 @@ public class LoginActivity extends AppCompatActivity implements ConstantsActivit
             if (response.code() == 200) {
                 openHomeActivity();
             } else if (response.code() == 400) {
-                if (response.errorBody() != null) {
-                    Toast.makeText(this, new JSONObject(response.errorBody().string()).getString("message"), Toast.LENGTH_LONG).show();
+                if (response.errorBody() != null && !response.errorBody().toString().isEmpty()) {
+                    Toast.makeText(this, new JSONObject(response.errorBody().string()).getString("error"), Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(this, "Usuário ou senha inválidos!", Toast.LENGTH_LONG).show();
                 }

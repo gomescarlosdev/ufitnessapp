@@ -9,12 +9,11 @@ import android.os.Bundle;
 import android.widget.Button;
 
 import br.com.gcdev.ufitness.R;
-import br.com.gcdev.ufitness.activity.InitialActivity;
 import br.com.gcdev.ufitness.activity.fragment.FirstOngoingFragment;
 import br.com.gcdev.ufitness.activity.fragment.SecondOngoingFragment;
 import br.com.gcdev.ufitness.activity.fragment.ThirdOngoingFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class OngoingActivity extends AppCompatActivity {
 
     private Button fragmentButton;
     private int countFrag = 1;
@@ -22,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_ongoing);
         countFrag = 1;
         fragmentButton = findViewById(R.id.fragment_button);
         fragmentButton.setOnClickListener(view -> {

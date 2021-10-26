@@ -110,6 +110,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/activity_instructor_register"
+            android:inputType="textCapCharacters"
             android:maxLength="11"
             android:clickable="true"
             android:focusable="true"/>

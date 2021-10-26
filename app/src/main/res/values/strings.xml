@@ -27,5 +27,6 @@
     <string name="activity_instructor_password">Senha</string>
     <string name="activity_instructor_repeat_password">Repetir Senha</string>
     <string name="activity_instructor_reg_btn_send">Enviar</string>
+    <string name="welcome">Bem vindo</string>
 
 </resources>

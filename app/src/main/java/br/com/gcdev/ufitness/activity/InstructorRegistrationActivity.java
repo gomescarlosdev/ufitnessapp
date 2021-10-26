@@ -180,7 +180,7 @@ public class InstructorRegistrationActivity extends AppCompatActivity implements
         if (document.isEmpty()) {
             editTextDocument.setError(CANNOT_BE_EMPYT);
             return false;
-        } else if (document.length() < 10) {
+        } else if (document.length() < 14) {
             editTextDocument.setError(DOCUMENT_TOO_SHORT);
             return false;
         } else {
@@ -193,7 +193,7 @@ public class InstructorRegistrationActivity extends AppCompatActivity implements
         if (registrationNumber.isEmpty()) {
             editTextRegistrationNumber.setError(CANNOT_BE_EMPYT);
             return false;
-        } else if (registrationNumber.length() < 15) {
+        } else if (registrationNumber.length() < 10) {
             editTextRegistrationNumber.setError(CREF_TOO_SHORT);
             return false;
         } else {

@@ -7,7 +7,7 @@ public interface ConstantsActivities {
     String PASSWORD_T0O_SHORT = "A senha deve ter no mínimo 8 caracteres";
     String EMAIL_INVALID = "Email inválido";
     String PASSWORD_DONT_MATCH = "As senhas não podem ser diferentes";
-    String DOCUMENT_TOO_SHORT = "O CPF deve ter no mínimo 15 caracteres";
-    String CREF_TOO_SHORT = "O CREF deve ter no mínimo 10 caracteres";
+    String DOCUMENT_TOO_SHORT = "O CPF deve ter no mínimo 11 digitos";
+    String CREF_TOO_SHORT = "O CREF deve ter no mínimo 10 digitos";
 
 }

@@ -14,7 +14,7 @@
         android:theme="@style/Theme.UfitnessApp">
 
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".activity.OngoingActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
