@@ -13,6 +13,10 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import static br.com.gcdev.ufitness.validator.RegistrationValidator.isNameValid;
+import static br.com.gcdev.ufitness.validator.RegistrationValidator.isEmailValid;
+import static br.com.gcdev.ufitness.validator.RegistrationValidator.isPasswordValid;
+import static br.com.gcdev.ufitness.validator.RegistrationValidator.arePasswordsTheSame;
 
 import java.io.IOException;
 
@@ -31,6 +35,7 @@ public class CustomerRegistrationActivity extends AppCompatActivity implements C
 
     TextInputEditText editTextName, editTextEmail, editTextPassword, editTextRepeatPassword;
     Button buttonSend;
+    private String repeatPassword;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,6 +59,7 @@ public class CustomerRegistrationActivity extends AppCompatActivity implements C
 
     private void onClickBtnSend() {
         buttonSend.setOnClickListener(v -> {
+            fillForm();
             if (isFormValid()) {
                 createCustomer();
             }
@@ -93,67 +99,16 @@ public class CustomerRegistrationActivity extends AppCompatActivity implements C
 
     private boolean isFormValid() {
 
-        String name = editTextName.getText() != null ? editTextName.getText().toString() : "";
-        String email = editTextEmail.getText() != null ? editTextEmail.getText().toString() : "";
-        String password = editTextPassword.getText() != null ? editTextPassword.getText().toString() : "";
-        String repeatPassword = editTextRepeatPassword.getText() != null ? editTextRepeatPassword.getText().toString() : "";
-
-        customerForm.setName(name);
-        customerForm.setEmail(email);
-        customerForm.setPassword(password);
-
-        return isNameValid(name) && isEmailValid(email) &&
-                isPasswordValid(password) && arePasswordsTheSame(password, repeatPassword);
-
+        return isNameValid(customerForm.getName(), editTextName) &&
+                isEmailValid(customerForm.getEmail(), editTextEmail) &&
+                isPasswordValid(customerForm.getPassword(), editTextPassword) &&
+                arePasswordsTheSame(customerForm.getPassword(), repeatPassword, editTextRepeatPassword);
     }
 
-    private boolean isNameValid(String name) {
-        if(name.isEmpty()){
-            editTextName.setError(CANNOT_BE_EMPYT);
-            return false;
-        }else{
-            editTextName.setError(null);
-            return true;
-        }
+    private void fillForm(){
+        customerForm.setName(editTextName.getText() != null ? editTextName.getText().toString() : "");
+        customerForm.setEmail(editTextEmail.getText() != null ? editTextEmail.getText().toString() : "");
+        customerForm.setPassword(editTextPassword.getText() != null ? editTextPassword.getText().toString() : "");
+        repeatPassword = editTextRepeatPassword.getText() != null ? editTextRepeatPassword.getText().toString() : "";
     }
-
-    private boolean isEmailValid(String email) {
-        if(email.isEmpty()){
-            editTextEmail.setError(CANNOT_BE_EMPYT);
-            return false;
-        }else if (!email.matches(EMAIL_PATTERN)){
-            editTextEmail.setError(EMAIL_INVALID);
-            return false;
-        }else{
-            editTextEmail.setError(null);
-            return true;
-        }
-    }
-
-    private boolean isPasswordValid(String password) {
-        if(password.isEmpty()){
-            editTextPassword.setError(CANNOT_BE_EMPYT);
-            return false;
-        }else if (password.length() < 8){
-            editTextPassword.setError(PASSWORD_T0O_SHORT);
-            return false;
-        }else{
-            editTextPassword.setError(null);
-            return true;
-        }
-    }
-
-    private boolean arePasswordsTheSame(String password, String repeatPassword) {
-        if(repeatPassword.isEmpty()){
-            editTextRepeatPassword.setError(CANNOT_BE_EMPYT);
-            return false;
-        } else if (!password.equals(repeatPassword)){
-            editTextRepeatPassword.setError(PASSWORD_DONT_MATCH);
-            return false;
-        } else{
-            editTextRepeatPassword.setError(null);
-            return true;
-        }
-    }
-
 }

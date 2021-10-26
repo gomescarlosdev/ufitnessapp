@@ -1,5 +1,12 @@
 package br.com.gcdev.ufitness.activity;
 
+import static br.com.gcdev.ufitness.validator.RegistrationValidator.arePasswordsTheSame;
+import static br.com.gcdev.ufitness.validator.RegistrationValidator.isDocumentValid;
+import static br.com.gcdev.ufitness.validator.RegistrationValidator.isEmailValid;
+import static br.com.gcdev.ufitness.validator.RegistrationValidator.isNameValid;
+import static br.com.gcdev.ufitness.validator.RegistrationValidator.isPasswordValid;
+import static br.com.gcdev.ufitness.validator.RegistrationValidator.isRegistrationNumberValid;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -33,6 +40,7 @@ public class InstructorRegistrationActivity extends AppCompatActivity implements
 
     TextInputEditText editTextName, editTextEmail, editTextDocument, editTextRegistrationNumber, editTextPassword, editTextRepeatPassword;
     Button buttonSend;
+    private String repeatPassword;
 
 
     @Override
@@ -68,6 +76,7 @@ public class InstructorRegistrationActivity extends AppCompatActivity implements
 
     private void onClickBtnSend() {
         buttonSend.setOnClickListener(v -> {
+            fillForm();
             if (isFormValid()) {
                 createInstructor();
             }
@@ -106,101 +115,22 @@ public class InstructorRegistrationActivity extends AppCompatActivity implements
     }
 
     private boolean isFormValid() {
-
-        String name = editTextName.getText() != null ? editTextName.getText().toString() : "";
-        String email = editTextEmail.getText() != null ? editTextEmail.getText().toString() : "";
-        String document = editTextDocument.getText() != null ? editTextDocument.getText().toString() : "";
-        String registrationNumber = editTextRegistrationNumber.getText() != null ? editTextRegistrationNumber.getText().toString() : "";
-        String password = editTextPassword.getText() != null ? editTextPassword.getText().toString() : "";
-        String repeatPassword = editTextRepeatPassword.getText() != null ? editTextRepeatPassword.getText().toString() : "";
-
-        instructorForm.setName(name);
-        instructorForm.setEmail(email);
-        instructorForm.setPassword(password);
-        instructorForm.setCpf(document.replace(".", "").replace("-", ""));
-        instructorForm.setCref(registrationNumber);
-
-        return isNameValid(name) &&
-                isEmailValid(email) &&
-                isDocumentValid(document) &&
-                isRegistrationNumberValid(registrationNumber) &&
-                isPasswordValid(password) &&
-                arePasswordsTheSame(password, repeatPassword);
+        return isNameValid(instructorForm.getName(), editTextName) &&
+                isEmailValid(instructorForm.getEmail(), editTextEmail) &&
+                isDocumentValid(instructorForm.getCpf(), editTextDocument) &&
+                isRegistrationNumberValid(instructorForm.getCref(), editTextRegistrationNumber) &&
+                isPasswordValid(instructorForm.getPassword(), editTextPassword) &&
+                arePasswordsTheSame(instructorForm.getPassword(), repeatPassword, editTextRepeatPassword);
     }
 
-    private boolean isNameValid(String name) {
-        if (name.isEmpty()) {
-            editTextName.setError(CANNOT_BE_EMPYT);
-            return false;
-        } else {
-            editTextName.setError(null);
-            return true;
-        }
-    }
-
-    private boolean isEmailValid(String email) {
-        if (email.isEmpty()) {
-            editTextEmail.setError(CANNOT_BE_EMPYT);
-            return false;
-        } else if (!email.matches(EMAIL_PATTERN)) {
-            editTextEmail.setError(EMAIL_INVALID);
-            return false;
-        } else {
-            editTextEmail.setError(null);
-            return true;
-        }
-    }
-
-    private boolean isPasswordValid(String password) {
-        if (password.isEmpty()) {
-            editTextPassword.setError(CANNOT_BE_EMPYT);
-            return false;
-        } else if (password.length() < 8) {
-            editTextPassword.setError(PASSWORD_T0O_SHORT);
-            return false;
-        } else {
-            editTextPassword.setError(null);
-            return true;
-        }
-    }
-
-    private boolean arePasswordsTheSame(String password, String repeatPassword) {
-        if (repeatPassword.isEmpty()) {
-            editTextRepeatPassword.setError(CANNOT_BE_EMPYT);
-            return false;
-        } else if (!password.equals(repeatPassword)) {
-            editTextRepeatPassword.setError(PASSWORD_DONT_MATCH);
-            return false;
-        } else {
-            editTextRepeatPassword.setError(null);
-            return true;
-        }
-    }
-
-    private boolean isDocumentValid(String document){
-        if (document.isEmpty()) {
-            editTextDocument.setError(CANNOT_BE_EMPYT);
-            return false;
-        } else if (document.length() < 14) {
-            editTextDocument.setError(DOCUMENT_TOO_SHORT);
-            return false;
-        } else {
-            editTextDocument.setError(null);
-            return true;
-        }
-    }
-
-    private boolean isRegistrationNumberValid(String registrationNumber){
-        if (registrationNumber.isEmpty()) {
-            editTextRegistrationNumber.setError(CANNOT_BE_EMPYT);
-            return false;
-        } else if (registrationNumber.length() < 10) {
-            editTextRegistrationNumber.setError(CREF_TOO_SHORT);
-            return false;
-        } else {
-            editTextRegistrationNumber.setError(null);
-            return true;
-        }
+    private void fillForm(){
+        instructorForm.setName(editTextName.getText() != null ? editTextName.getText().toString() : "");
+        instructorForm.setEmail(editTextEmail.getText() != null ? editTextEmail.getText().toString() : "");
+        instructorForm.setCpf(editTextDocument.getText() != null ? editTextDocument.getText()
+                .toString().replace(".", "").replace("-", "") : "");
+        instructorForm.setCref(editTextRegistrationNumber.getText() != null ? editTextRegistrationNumber.getText().toString() : "");
+        instructorForm.setPassword(editTextPassword.getText() != null ? editTextPassword.getText().toString() : "");
+        repeatPassword = editTextRepeatPassword.getText() != null ? editTextRepeatPassword.getText().toString() : "";
     }
 
 }
