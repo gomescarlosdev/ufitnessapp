@@ -33,8 +33,10 @@ public class CustomerRegistrationActivity extends AppCompatActivity implements C
 
     private CustomerForm customerForm = new CustomerForm();
 
-    TextInputEditText editTextName, editTextEmail, editTextPassword, editTextRepeatPassword;
-    Button buttonSend;
+    private TextInputEditText editTextName, editTextEmail, editTextPassword, editTextRepeatPassword;
+
+    private Button buttonSend;
+
     private String repeatPassword;
 
     @Override

@@ -38,8 +38,10 @@ public class InstructorRegistrationActivity extends AppCompatActivity implements
 
     private InstructorForm instructorForm = new InstructorForm();
 
-    TextInputEditText editTextName, editTextEmail, editTextDocument, editTextRegistrationNumber, editTextPassword, editTextRepeatPassword;
-    Button buttonSend;
+    private TextInputEditText editTextName, editTextEmail, editTextDocument, editTextRegistrationNumber, editTextPassword, editTextRepeatPassword;
+
+    private Button buttonSend;
+
     private String repeatPassword;
 
 

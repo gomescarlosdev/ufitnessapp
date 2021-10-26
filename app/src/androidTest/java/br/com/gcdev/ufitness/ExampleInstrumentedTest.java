@@ -15,7 +15,6 @@ public class ExampleInstrumentedTest {
 
     @Test
     public void useAppContext() {
-        // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertEquals("br.com.gcdev.ufitness", appContext.getPackageName());
     }
